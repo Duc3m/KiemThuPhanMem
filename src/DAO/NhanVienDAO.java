@@ -49,6 +49,31 @@ public class NhanVienDAO {
         return result;
     }
     
+    public ArrayList<NhanVienDTO> selectAllWithoutAccount() {
+        ArrayList<NhanVienDTO> result = new ArrayList<NhanVienDTO>();
+        try {
+            Connection conn = (Connection) DBConnector.getConnection();
+                String query = "SELECT * FROM nhanvien WHERE nhanvien.id NOT IN ( SELECT taikhoan.nhanVien_id FROM taikhoan)";
+            PreparedStatement pst = (PreparedStatement) conn.prepareStatement(query);
+            ResultSet rs = (ResultSet) pst.executeQuery();
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String ho = rs.getString("ho");
+                String ten = rs.getNString("ten");
+                String gioiTinh = rs.getString("gioitinh");
+                String sdt = rs.getString("soDienThoai");
+                String email = rs.getString("email");
+                int trangThai = rs.getInt("trangThai");
+                NhanVienDTO nv = new NhanVienDTO(id, ho, ten, gioiTinh, sdt, email, trangThai);
+                result.add(nv);
+            }
+            DBConnector.closeConnection(conn);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return result;
+    }
+    
     public NhanVienDTO selectByAccountId(String t) {
         NhanVienDTO nv = null;
         try{
