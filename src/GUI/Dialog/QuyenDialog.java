@@ -313,6 +313,7 @@ public class QuyenDialog extends javax.swing.JDialog {
 //            }
             if(qBUS.add(newQuyen, newCTQList)) {
                 JOptionPane.showMessageDialog(this, "Thêm quyền mới thành công");
+                
                 dispose();
             }
         }

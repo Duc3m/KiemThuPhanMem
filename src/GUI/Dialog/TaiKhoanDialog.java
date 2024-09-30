@@ -143,6 +143,8 @@ public class TaiKhoanDialog extends javax.swing.JDialog {
     public void editEvent(){
         if(!ValidateInput())
             return;
+        if(!ValidateDuplication())
+            return;
         setEditedTK();
         if(tkPanel.tkBUS.update(taiKhoan)){
             JOptionPane.showMessageDialog(this, "Sửa thông tin tài khoản thành công!");

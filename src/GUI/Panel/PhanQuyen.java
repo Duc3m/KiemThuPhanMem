@@ -98,7 +98,7 @@ public class PhanQuyen extends javax.swing.JPanel implements ActionListener {
         themBtn.addActionListener(this);
         suaBtn.addActionListener(this);
         xoaBtn.addActionListener(this);
-        toolBar.add(exportBtn);
+//        toolBar.add(exportBtn);
         exportBtn.addActionListener(this);
         quyenTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
         tableModel = (DefaultTableModel) quyenTable.getModel(); 
@@ -213,6 +213,7 @@ public class PhanQuyen extends javax.swing.JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == chiTietBtn) {
             int index = getSelectedRow();
+            
             if(index != -1) {
                 int id = (int) quyenTable.getValueAt(index, 0);
                 QuyenDialog qDialog = new QuyenDialog(main, true, qBUS.getObjectById(id), qBUS.getCTQListById(id), "detail");
@@ -226,6 +227,7 @@ public class PhanQuyen extends javax.swing.JPanel implements ActionListener {
             QuyenDialog qDialog = new QuyenDialog(main, true, null, null, "add");
             qDialog.setVisible(true);
             qList = qDAO.selectAll();
+            qBUS.quyenList = qDAO.selectAll();
             loadDataToTable(qList);
         }
         

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class QuyenBUS {
     public QuyenDAO qDAO = new QuyenDAO();
     public CTQuyenDAO ctqDAO = new CTQuyenDAO();
-    private ArrayList<QuyenDTO> quyenList = new ArrayList<>();
+    public ArrayList<QuyenDTO> quyenList = new ArrayList<>();
     
     public QuyenBUS() {
         quyenList = qDAO.selectAll();
