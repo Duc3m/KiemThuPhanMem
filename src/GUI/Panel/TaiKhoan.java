@@ -95,7 +95,7 @@ public class TaiKhoan extends javax.swing.JPanel implements ActionListener {
         if(qBUS.checkQuyen(ctqList, 9, "edit"))
             toolBar.add(suaBtn);
         if(qBUS.checkQuyen(ctqList, 9, "delete")) {
-            toolBar.add(xoaBtn);
+//            toolBar.add(xoaBtn);
             toolBar.add(khoaBtn);
         }
         chiTietBtn.addActionListener(this);
@@ -103,7 +103,7 @@ public class TaiKhoan extends javax.swing.JPanel implements ActionListener {
         suaBtn.addActionListener(this);
         xoaBtn.addActionListener(this);
         khoaBtn.addActionListener(this);
-        toolBar.add(exportBtn);
+//        toolBar.add(exportBtn);
         exportBtn.addActionListener(this);
         tkTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
         tableModel = (DefaultTableModel) tkTable.getModel(); 
