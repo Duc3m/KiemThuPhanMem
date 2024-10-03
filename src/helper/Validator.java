@@ -18,6 +18,13 @@ public class Validator {
         return input.equals("");
     }
     
+    public static boolean isWord(String input) {
+        if(input == null) return false;
+        String wordRegex = "[a-zA-Z]";
+        Pattern pattern = Pattern.compile(wordRegex);
+        return pattern.matcher(input).matches();
+    }
+    
     public static boolean isInteger(String num) {
         if (num == null) return false;
         try {

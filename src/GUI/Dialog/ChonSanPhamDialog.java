@@ -30,6 +30,7 @@ public class ChonSanPhamDialog extends javax.swing.JDialog {
     private DefaultTableModel tblPBSPModel;
     public int selectedId;
     private String mode;
+    public boolean choosen;
     
     public ChonSanPhamDialog(java.awt.Frame parent, boolean modal, ArrayList<SanPhamDTO> spList, ArrayList<PhienBanSanPhamDTO> pbspList, String mode) {
         super(parent, modal);
@@ -57,6 +58,7 @@ public class ChonSanPhamDialog extends javax.swing.JDialog {
             public void mousePressed(MouseEvent e) {
                 try {
                     pbspTable.getValueAt(pbspTable.getSelectedRow(), 0);
+                    choosen = true;
                     dispose();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Chưa chọn phiên bản");

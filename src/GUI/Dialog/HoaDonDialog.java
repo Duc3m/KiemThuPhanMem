@@ -245,6 +245,7 @@ public class HoaDonDialog extends javax.swing.JDialog {
         }
         if(this.kh == null)
             return null;
+        System.out.println(this.newhdId);
         return new HoaDonDTO(this.newhdId , this.kh.getId(), this.currentUser.getIdNhanVien(), ngayXuat, (long) this.tongTien, kmid);
     }
     
@@ -642,16 +643,17 @@ public class HoaDonDialog extends javax.swing.JDialog {
             }
             if(pbspId == -1)
             return;
-
+            if(dialog.choosen == false) return;
             ChonCTSPDialog ctspDialog = new ChonCTSPDialog(null, true, pbspId);
             ctspDialog.setVisible(true);
-            
+            if(ctspDialog.choosen == false) return;
             String imei = ctspDialog.getSelectedIMEI();
             if(imei.equals(""))
                 return;
             CTSanPhamDTO ctsp = ctspBUS.getSanPhamByImei(imei);
             
             int soThang = getSoThang();
+            if(soThang == 0) return;
             long now = System.currentTimeMillis();
             Date nowDate = new Date(now);
             nowDate.setMonth(nowDate.getMonth() + soThang);

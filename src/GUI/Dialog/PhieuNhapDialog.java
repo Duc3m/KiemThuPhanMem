@@ -540,6 +540,7 @@ public class PhieuNhapDialog extends javax.swing.JDialog {
             ChonSanPhamDialog dialog = new ChonSanPhamDialog(pnPanel.main, true, null, null, "nhap");
             dialog.setVisible(true);
             try {
+                if(dialog.choosen == false) return;
                 int pbspId = dialog.getSelectedId();
                 if(pbspId == -1)
                     return;

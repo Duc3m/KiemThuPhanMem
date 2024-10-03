@@ -69,7 +69,7 @@ public class PhieuNhapBUS {
         switch(type){
             case "Tất cả":
                 for(PhieuNhapDTO i : phieuNhapList) {
-                    if(Integer.toString(i.getId()).toLowerCase().contains(text) || nccBUS.getNameByID(i.getId()).toLowerCase().contains(text) || nvBUS.getNameByID(i.getId()).toLowerCase().contains(text) || Formatter.FormatDateTime(i.getNgayNhap()).contains(text) || Formatter.FormatVND(i.getTongTien()).contains(text))
+                    if(Integer.toString(i.getId()).toLowerCase().contains(text) || nccBUS.getNameByID(i.getIdNhaCungCap()).toLowerCase().contains(text) || nvBUS.getNameByID(i.getIdNhanVien()).toLowerCase().contains(text) || Formatter.FormatDateTime(i.getNgayNhap()).contains(text) || Formatter.FormatVND(i.getTongTien()).contains(text))
                         result.add(i);
                 }
                 break;
@@ -81,13 +81,13 @@ public class PhieuNhapBUS {
                 break;
             case "Nhà cung cấp":
                 for(PhieuNhapDTO i : phieuNhapList){
-                    if(nccBUS.getNameByID(i.getId()).toLowerCase().contains(text))
+                    if(nccBUS.getNameByID(i.getIdNhaCungCap()).toLowerCase().contains(text))
                         result.add(i);
                 }
                 break;
             case "Nhân viên nhập":
                 for(PhieuNhapDTO i : phieuNhapList){
-                    if(nvBUS.getNameByID(i.getId()).toLowerCase().contains(text))
+                    if(nvBUS.getNameByID(i.getIdNhanVien()).toLowerCase().contains(text))
                         result.add(i);
                 }
                 break;
