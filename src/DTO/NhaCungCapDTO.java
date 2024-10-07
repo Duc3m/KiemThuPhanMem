@@ -73,5 +73,9 @@ public class NhaCungCapDTO {
         this.trangThai = trangThai;
     }
 
+    @Override
+    public String toString() {
+        return "NhaCungCapDTO{" + "id=" + id + ", ten=" + ten + ", diaChi=" + diaChi + ", soDienThoai=" + soDienThoai + ", email=" + email + ", trangThai=" + trangThai + '}';
+    }
     
 }

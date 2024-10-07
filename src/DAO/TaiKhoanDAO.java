@@ -26,7 +26,7 @@ public class TaiKhoanDAO {
         ArrayList<TaiKhoanDTO> result = new ArrayList<>();
         try {
             Connection conn = (Connection) DBConnector.getConnection();
-            String query = "SELECT * FROM taikhoan WHERE trangThai!=0";
+            String query = "SELECT * FROM taikhoan";
             PreparedStatement pst = (PreparedStatement) conn.prepareStatement(query);
             ResultSet rs = (ResultSet) pst.executeQuery();
             while(rs.next()){

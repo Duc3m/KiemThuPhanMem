@@ -150,7 +150,7 @@ public class NhanVienDAO {
             pst.setString(3, nv.getGioiTinh());
             pst.setString(4, nv.getSoDienThoai());
             pst.setString(5, nv.getEmail());
-            pst.setInt(7, nv.getId());
+            pst.setInt(6, nv.getId());
             result = pst.executeUpdate();
             DBConnector.closeConnection(conn);
         } catch (SQLException e) {
@@ -163,9 +163,10 @@ public class NhanVienDAO {
         int result = 0;
         try {
             Connection conn = (Connection) DBConnector.getConnection();
-            String query = "UPDATE `nhanvien` SET `trangThai`=0 WHERE `id`=?";
+            String query = "UPDATE `nhanvien` nv, `taikhoan` tk SET nv.`trangThai`=0, tk.trangThai=2 WHERE nv.`id`= ? and tk.`nhanVien_id`=?";
             PreparedStatement pst = (PreparedStatement) conn.prepareStatement(query);
             pst.setInt(1, id);
+            pst.setInt(2, id);
             result = pst.executeUpdate();
             DBConnector.closeConnection(conn);
         } catch (SQLException e) {

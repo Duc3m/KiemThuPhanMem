@@ -714,6 +714,7 @@ public class HoaDonDialog extends javax.swing.JDialog {
         ChonKhachHangDialog ckhDialog = new ChonKhachHangDialog(null, true);
         ckhDialog.setVisible(true);
         try {
+            if(ckhDialog.choosen == false) return;
             int khId = ckhDialog.getSelectedId();
             this.kh = khBUS.getObjectById(khId);
             txtKhachHang.setText(kh.getHo()+" "+kh.getTen());

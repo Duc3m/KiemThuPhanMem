@@ -88,8 +88,16 @@ public class NhaCungCapDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Bạn chưa nhập Email nhà cung cấp");
             return false;
         }
+        if(!Validator.isName(txtTen.getText())) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập tên hợp lệ");
+            return false;
+        }
+        if(!Validator.isName(txtDiaChi.getText())) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập địa chỉ hợp lệ");
+            return false;
+        }
         if(!Validator.isPhoneNumber(txtSoDienThoai.getText())){
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số diện thoại của nhà cung cấp");
+            JOptionPane.showMessageDialog(this, "Số điện thoại phải là số bắt đầu bằng 0 và có độ dài 10 chữ số");
             txtSoDienThoai.requestFocus();
             return false;
         }
@@ -101,9 +109,10 @@ public class NhaCungCapDialog extends javax.swing.JDialog {
         return true;
     }
     
-    public boolean ValidateDuplication(){
+    public boolean ValidateDuplication(int id){
         for(NhaCungCapDTO i : nccBUS.getAll()){
-            if(i.getTen().equals(txtTen.getText()) && i.getDiaChi().equals(txtDiaChi.getText()) && i.getSoDienThoai().equals(txtSoDienThoai.getText()) && i.getEmail().equals(txtEmail.getText())){
+            if(i.getId() == id) continue;
+            if(i.getTen().equals(txtTen.getText()) || i.getDiaChi().equals(txtDiaChi.getText()) || i.getSoDienThoai().equals(txtSoDienThoai.getText()) || i.getEmail().equals(txtEmail.getText())){
                 JOptionPane.showMessageDialog(this, "Nhà cung cấp đã tồn tại!");
                 return false;
             }
@@ -130,7 +139,7 @@ public class NhaCungCapDialog extends javax.swing.JDialog {
         if(!ValidateInput()){
             return;
         }
-        if(!ValidateDuplication()){
+        if(!ValidateDuplication(-1)){
             return;
         }
         newNhaCungCap = getNewNCC();
@@ -142,9 +151,8 @@ public class NhaCungCapDialog extends javax.swing.JDialog {
     }
     
     public void editEvent(){
-        if(!ValidateInput()){
-            return;
-        }
+        if(!ValidateInput()) return;
+        if(!ValidateDuplication(nhaCungCap.getId())) return;
         setEditedNCC();
         if(nccPanel.nccBUS.update(nhaCungCap)){
             JOptionPane.showMessageDialog(this, "Sửa thông tin nhà cung cấp thành công!");

@@ -25,6 +25,13 @@ public class Validator {
         return pattern.matcher(input).matches();
     }
     
+    public static boolean isName(String input) {
+        if(input == null) return false;
+        String wordRegex = "^[a-zA-Z\\u00C0-\\u1EF9]+(?:[\\s.]+[a-zA-Z\\u00C0-\\u1EF9]+)*$";
+        Pattern pattern = Pattern.compile(wordRegex);
+        return pattern.matcher(input).matches();
+    }
+    
     public static boolean isInteger(String num) {
         if (num == null) return false;
         try {

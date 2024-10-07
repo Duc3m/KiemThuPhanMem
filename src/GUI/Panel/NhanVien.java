@@ -7,6 +7,7 @@ package GUI.Panel;
 import BUS.ChucNangBUS;
 import BUS.NhanVienBUS;
 import BUS.QuyenBUS;
+import DAO.TaiKhoanDAO;
 import DTO.CTQuyenDTO;
 import DTO.ChucNangDTO;
 import DTO.NhanVienDTO;
@@ -69,7 +70,7 @@ public class NhanVien extends javax.swing.JPanel implements ActionListener {
     }
     
     public void initComponentsCustom() {
-        searchBar = new SearchBar(new String[]{"Tất cả", "Mã", "Tên", "Giới tính", "Số điện thoại", "Email", "Chức vụ"});
+        searchBar = new SearchBar(new String[]{"Tất cả", "Mã", "Tên", "Giới tính", "Số điện thoại", "Email"});
         searchBar.txtSearch.addKeyListener(new KeyAdapter(){
             @Override
             public void keyReleased(KeyEvent e) {
@@ -84,7 +85,7 @@ public class NhanVien extends javax.swing.JPanel implements ActionListener {
         });
         searchBar.cbxType.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                searchEvent();
+                searchEvent();;
             }
         });
         topPanel.add(searchBar, BorderLayout.CENTER);
@@ -106,11 +107,17 @@ public class NhanVien extends javax.swing.JPanel implements ActionListener {
     }
     
     public void loadDataToTable(ArrayList<NhanVienDTO> nvList){
-        nvList = nvBUS.getAll();
+//        nvList = nvBUS.getAll();
         tableModel.setRowCount(0);
         for(NhanVienDTO i : nvList){
-            if(i.getTrangThai() == 1)
-            tableModel.addRow(new Object[] {i.getId(), i.getHo(), i.getTen(), i.getGioiTinh(), i.getSoDienThoai(), i.getEmail(), "Đang làm việc"});
+            tableModel.addRow(new Object[] {
+                i.getId(),
+                i.getHo(),
+                i.getTen(),
+                i.getGioiTinh(),
+                i.getSoDienThoai(),
+                i.getEmail(),
+                (i.getTrangThai() == 1?"Đang làm việc":"Đã nghỉ việc")});
         }
     }
     
@@ -256,9 +263,13 @@ public class NhanVien extends javax.swing.JPanel implements ActionListener {
             int index = getSelectedRow();
             int id = Integer.parseInt(nvTable.getValueAt(index, 0).toString());
             if(index != -1) {
-                if(JOptionPane.showConfirmDialog(main, "Bạn có chắc muốn xóa nhân viên này không?", "", JOptionPane.YES_NO_OPTION) == 0)
+                if(JOptionPane.showConfirmDialog(main, "Bạn có chắc muốn cho nhân viên này nghỉ việc không?", "", JOptionPane.YES_NO_OPTION) == 0) {
                     nvBUS.delete(nhanVienList.get(nvBUS.getIndexByID(id)));
+                    main.taiKhoan.tkList = TaiKhoanDAO.getInstance().selectAll();
+                    main.taiKhoan.loadDataToTable(main.taiKhoan.tkList);
+                }
                 loadDataToTable(nhanVienList);
+                JOptionPane.showMessageDialog(main, "Thôi việc nhân viên thành công");
             }
         }
         
