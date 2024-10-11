@@ -10,8 +10,6 @@ import javax.swing.*;
 
 import java.util.Date;
 
-
-
 import org.apache.logging.log4j.core.appender.db.jdbc.JdbcAppender;
 
 public class SearchDaytoDay extends JPanel {
@@ -60,43 +58,43 @@ public class SearchDaytoDay extends JPanel {
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1)
-                .addGap(50, 50, 50)
-                .addComponent(jDateChooser1, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jDateChooser2, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel1)
+                                .addGap(50, 50, 50)
+                                .addComponent(jDateChooser1, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jDateChooser2, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jDateChooser2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDateChooser1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jDateChooser2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jDateChooser1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel1))
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }
 
- 
+    public JDateChooser tu;
 
-    public JDateChooser tu ; 
-public  JDateChooser giatritu(){
-    tu = jDateChooser1;
-    return tu;
-}
-public JDateChooser den ; 
-public  JDateChooser giatriden(){
-    den = jDateChooser2;
-    return den;
-}
+    public JDateChooser giatritu() {
+        tu = jDateChooser1;
+        return tu;
+    }
+    public JDateChooser den;
+
+    public JDateChooser giatriden() {
+        den = jDateChooser2;
+        return den;
+    }
 
     // Hàm kiểm tra và lọc dữ liệu
     private void validateAndFilter() {
@@ -104,35 +102,31 @@ public  JDateChooser giatriden(){
         try {
             Date startDateObj = jDateChooser1.getDate();
             Date endDateObj = jDateChooser2.getDate();
-            
-            Date maxDate = new Date(); 
-    
+
+            Date maxDate = new Date();
+
             if (endDateObj == null) {
-                endDateObj = maxDate; 
+                endDateObj = maxDate;
             }
-    
+
             if (startDateObj != null && endDateObj == maxDate) {
-                System.out.println("Chỉ có ngày bắt đầu: " + sdf.format(startDateObj));
+//                System.out.println("Chỉ có ngày bắt đầu: " + sdf.format(startDateObj));
             }
-    
+
             // Kiểm tra nếu ngày bắt đầu lớn hơn ngày kết thúc
             if (startDateObj != null && startDateObj.after(endDateObj)) {
-                JOptionPane.showMessageDialog(this, "Ngày bắt đầu không thể lớn hơn ngày kết thúc.", "Lỗi", JOptionPane.WARNING_MESSAGE);
-                return; 
+                JOptionPane.showMessageDialog(null, "Ngày bắt đầu không thể lớn hơn ngày kết thúc.", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                return;
             }
-    
+
             String startDate = startDateObj != null ? sdf.format(startDateObj) : "Không có ngày bắt đầu";
             String endDate = sdf.format(endDateObj);
-            System.out.println("Tìm kiếm ngày từ: " + startDate + " đến " + endDate);
-            
+//            System.out.println("Tìm kiếm ngày từ: " + startDate + " đến " + endDate);
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra, vui lòng chọn ngày hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra, vui lòng chọn ngày hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-
-    
-    
 
     // Variables declaration - do not modify                     
     private JDateChooser jDateChooser1;

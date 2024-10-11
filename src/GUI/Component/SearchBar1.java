@@ -8,14 +8,17 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import java.awt.BorderLayout;
+
 /**
  *
  * @author Admin
  */
 public class SearchBar1 extends javax.swing.JPanel {
+
     public SearchTongTien searchTongTien = new SearchTongTien();
     // SearchDaytoDay searchDaytoDay = new SearchDaytoDay();
     public SearchDaytoDay searchDaytoDay = new SearchDaytoDay();
+
     /**
      * Creates new form SearchBar
      */
@@ -26,10 +29,10 @@ public class SearchBar1 extends javax.swing.JPanel {
         txtSearch.putClientProperty("JTextField.showClearButton", true);
 //        addSearchDaytoDay();
 //        addSearchTongTien();
-        
+
         setupComboBoxListener();
     }
-    
+
     public SearchBar1(String[] str) {
         initComponents();
         cbxType.setModel(new DefaultComboBoxModel<>(str));
@@ -40,71 +43,67 @@ public class SearchBar1 extends javax.swing.JPanel {
 //        addSearchTongTien();
         setupComboBoxListener();
     }
-    
-    
-    
-     private void addSearchDaytoDay() {
-    searchDaytoDay.setVisible(true);
-    JpanelHien.removeAll();
-    
-    // Set the layout for JpanelHien
-    JpanelHien.setLayout(new BorderLayout()); // Change to BorderLayout if needed
-    
-    // Add the SearchTongTien panel to JpanelHien
-    JpanelHien.add(searchDaytoDay, BorderLayout.CENTER); // Use BorderLayout.CENTER to fill the panel
-    
-    // Revalidate and repaint to update the layout
-    JpanelHien.revalidate();
-    JpanelHien.repaint();
-}
-     
-     private void addSearchTongTien() {
-    searchTongTien.setVisible(true);
-    // Clear all existing components from JpanelHien
-    JpanelHien.removeAll();
-    
-    // Set the layout for JpanelHien
-    JpanelHien.setLayout(new BorderLayout()); // Change to BorderLayout if needed
-    
-    // Add the SearchTongTien panel to JpanelHien
-    JpanelHien.add(searchTongTien, BorderLayout.CENTER); // Use BorderLayout.CENTER to fill the panel
-    
-    // Revalidate and repaint to update the layout
-    JpanelHien.revalidate();
-    JpanelHien.repaint();
-}
-     private void setupComboBoxListener() {
-    // Add an ActionListener to the JComboBox
-    cbxType.addActionListener(e -> {
-        // Get the selected item from the JComboBox
-        String selectedItem = (String) cbxType.getSelectedItem();
 
-        // Check if searchTongTien is not null
-       if (searchTongTien != null) {
-    // Kiểm tra nếu giá trị của selectedItem là "Tổng Tiền"
-            if (selectedItem.equals("Tổng tiền")) {
-            searchTongTien.setVisible(true); // Hiện panel SearchTongTien
-            searchDaytoDay.setVisible(false);
-            addSearchTongTien();
-            }
-            else if (selectedItem.equals("Ngày xuất")) {
-             searchDaytoDay.setVisible(true);
-             searchTongTien.setVisible(false);
-             addSearchDaytoDay();
-            } else {
-            searchTongTien.setVisible(false); // Ẩn panel SearchTongTien
-            searchDaytoDay.setVisible(false);
-    }
-}
+    private void addSearchDaytoDay() {
+        searchDaytoDay.setVisible(true);
+        JpanelHien.removeAll();
+
+        // Set the layout for JpanelHien
+        JpanelHien.setLayout(new BorderLayout()); // Change to BorderLayout if needed
+
+        // Add the SearchTongTien panel to JpanelHien
+        JpanelHien.add(searchDaytoDay, BorderLayout.CENTER); // Use BorderLayout.CENTER to fill the panel
 
         // Revalidate and repaint to update the layout
         JpanelHien.revalidate();
         JpanelHien.repaint();
-    });
-}
+    }
 
+    private void addSearchTongTien() {
+        searchTongTien.setVisible(true);
+        // Clear all existing components from JpanelHien
+        JpanelHien.removeAll();
 
-     
+        // Set the layout for JpanelHien
+        JpanelHien.setLayout(new BorderLayout()); // Change to BorderLayout if needed
+
+        // Add the SearchTongTien panel to JpanelHien
+        JpanelHien.add(searchTongTien, BorderLayout.CENTER); // Use BorderLayout.CENTER to fill the panel
+
+        // Revalidate and repaint to update the layout
+        JpanelHien.revalidate();
+        JpanelHien.repaint();
+    }
+
+    private void setupComboBoxListener() {
+        // Add an ActionListener to the JComboBox
+        cbxType.addActionListener(e -> {
+            // Get the selected item from the JComboBox
+            String selectedItem = (String) cbxType.getSelectedItem();
+
+            // Check if searchTongTien is not null
+            if (searchTongTien != null) {
+                // Kiểm tra nếu giá trị của selectedItem là "Tổng Tiền"
+                if (selectedItem.equals("Tổng tiền")) {
+                    searchTongTien.setVisible(true); // Hiện panel SearchTongTien
+                    searchDaytoDay.setVisible(false);
+                    addSearchTongTien();
+                } else if (selectedItem.equals("Ngày xuất") || selectedItem.equals("Ngày nhập")) {
+                    searchDaytoDay.setVisible(true);
+                    searchTongTien.setVisible(false);
+                    addSearchDaytoDay();
+                } else {
+                    searchTongTien.setVisible(false); // Ẩn panel SearchTongTien
+                    searchDaytoDay.setVisible(false);
+                }
+            }
+
+            // Revalidate and repaint to update the layout
+            JpanelHien.revalidate();
+            JpanelHien.repaint();
+        });
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -14,6 +14,7 @@ import DTO.ChucNangDTO;
 import DTO.PhieuNhapDTO;
 import DTO.TaiKhoanDTO;
 import GUI.Component.SearchBar;
+import GUI.Component.SearchBar1;
 import GUI.Component.ToolBarButton;
 import GUI.Dialog.PhieuNhapDialog;
 import GUI.Main;
@@ -30,10 +31,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -56,7 +62,7 @@ public class PhieuNhap extends javax.swing.JPanel implements ActionListener{
     public ArrayList<ChucNangDTO> cnList = cnBUS.getAll();
     
     private DefaultTableModel tableModel;
-    public SearchBar searchBar;
+    public SearchBar1 searchBar;
     ToolBarButton chiTietBtn = new ToolBarButton("Chi tiết", "toolBar_detail.svg", "detail");
     ToolBarButton themBtn = new ToolBarButton("Nhập hàng", "toolBar_add.svg", "add");
     public ToolBarButton exportBtn = new ToolBarButton("Xuất excel", "toolBar_export.svg", "export");
@@ -74,7 +80,7 @@ public class PhieuNhap extends javax.swing.JPanel implements ActionListener{
     }
     
     public void initComponentsCustom() {
-        searchBar = new SearchBar(new String[]{"Tất cả", "Mã", "Nhà cung cấp", "Nhân viên nhập", "Ngày và giờ nhập", "Tổng tiền"});
+        searchBar = new SearchBar1(new String[]{"Tất cả", "Mã", "Nhà cung cấp", "Nhân viên nhập", "Ngày nhập", "Tổng tiền"});
         searchBar.txtSearch.addKeyListener(new KeyAdapter(){
             @Override
             public void keyReleased(KeyEvent e) {
@@ -88,10 +94,88 @@ public class PhieuNhap extends javax.swing.JPanel implements ActionListener{
             }
         });
         searchBar.cbxType.addItemListener(new ItemListener() {
+            @Override
             public void itemStateChanged(ItemEvent e) {
-                searchEvent();
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String selectedItem = (String) searchBar.cbxType.getSelectedItem();
+
+                    if (selectedItem.equals("Tổng tiền")) {
+                        // Hiển thị hai TextField "giatritu" và "giatriden"
+                        searchBar.searchTongTien.giatritu().setEnabled(true);
+                        searchBar.searchTongTien.giatriden().setEnabled(true);
+                    } else if (selectedItem.equals("Ngày nhập")) {
+                        searchBar.searchDaytoDay.giatritu().setEnabled(true);
+                        searchBar.searchDaytoDay.giatriden().setEnabled(true);
+                    } else {
+                        // Gọi hàm tìm kiếm khác khi loại tìm kiếm không phải là "Tổng tiền"
+                        searchEvent();
+                    }
+                }
             }
         });
+        searchBar.searchTongTien.giatritu().getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                performSearchByTotalAmount();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                performSearchByTotalAmount();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                performSearchByTotalAmount();
+            }
+        });
+
+        searchBar.searchTongTien.giatriden().getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                performSearchByTotalAmount();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                performSearchByTotalAmount();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                performSearchByTotalAmount();
+            }
+        });
+
+        searchBar.searchDaytoDay.giatritu().addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                Date startDate = (Date) searchBar.searchDaytoDay.giatritu().getDate();
+                Date endDate = (Date) searchBar.searchDaytoDay.giatriden().getDate();
+                performSearchByDateRange(startDate, endDate);
+            }
+        });
+
+        searchBar.searchDaytoDay.giatriden().addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                Date startDate = (Date) searchBar.searchDaytoDay.giatritu().getDate();
+                Date endDate = (Date) searchBar.searchDaytoDay.giatriden().getDate();
+                performSearchByDateRange(startDate, endDate);
+            }
+        });
+        // làm mới calendar
+        searchBar.lamMoiBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // dặt null
+                searchBar.searchDaytoDay.giatritu().setDate(null);
+                searchBar.searchDaytoDay.giatriden().setDate(null);
+
+                reloadEvent();
+            }
+        });
+        
         topPanel.add(searchBar, BorderLayout.CENTER);
         toolBar.add(chiTietBtn);
         if(qBUS.checkQuyen(ctqList, 2, "add"))
@@ -102,6 +186,45 @@ public class PhieuNhap extends javax.swing.JPanel implements ActionListener{
         exportBtn.addActionListener(this);
         pnTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
         tableModel = (DefaultTableModel) pnTable.getModel();
+    }
+    
+    private void performSearchByTotalAmount() {
+        String giatritu = searchBar.searchTongTien.giatritu().getText();
+        String giatriden = searchBar.searchTongTien.giatriden().getText();
+
+        int giaTriTu = 0;
+        int giaTriDen = Integer.MAX_VALUE;
+
+        try {
+            if (!giatritu.isEmpty()) {
+                giaTriTu = Integer.parseInt(giatritu);
+            }
+            if (!giatriden.isEmpty()) {
+                giaTriDen = Integer.parseInt(giatriden);
+            }
+
+            loadDataToTable(pnBUS.searchByTotalAmount(giaTriTu, giaTriDen));
+        } catch (NumberFormatException ex) {
+            // Xử lý ngoại lệ nếu giatritu hoặc giatriden không phải là số nguyên
+            System.out.println("Giá trị nhập không hợp lệ: " + ex.getMessage());
+        }
+    }
+
+    private void performSearchByDateRange(Date startDate, Date endDate) {
+        if (startDate == null) {
+            startDate = new Date(Long.MIN_VALUE);
+        }
+
+        if (endDate == null) {
+            endDate = new Date();
+        }
+
+        if (startDate.after(endDate)) {
+            System.out.println("Ngày bắt đầu phải trước ngày kết thúc.");
+            return;
+        }
+
+        loadDataToTable(pnBUS.searchByDateRange(startDate, endDate));
     }
     
     public void loadDataToTable(ArrayList<PhieuNhapDTO> pnList) {
