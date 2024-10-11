@@ -256,9 +256,15 @@ public class ThemSuaSanPhamDialog extends javax.swing.JDialog {
         if (!Validator.isFloat(txtKTMH.getText())) {
             JOptionPane.showMessageDialog(this, "Kích thước màn hình phải là số dương");
             return false;
+        } else if (Float.parseFloat(txtKTMH.getText()) <= 1.99 || Float.parseFloat(txtKTMH.getText()) > 10.0) {
+            JOptionPane.showMessageDialog(this, "Kích thước màn hình phải từ 2 đến 10");
+            return false;
         }
         if (!Validator.isInteger(txtDLPin.getText())) {
             JOptionPane.showMessageDialog(this, "Dung lượng pin phải là số nguyên dương");
+            return false;
+        } else if (Integer.parseInt(txtDLPin.getText()) <= 0) {
+            JOptionPane.showMessageDialog(this, "Dung lượng pin phải lớn hơn 0");
             return false;
         }
         if (imageURL == null) {
@@ -284,10 +290,16 @@ public class ThemSuaSanPhamDialog extends javax.swing.JDialog {
         if (!Validator.isInteger(txtRam.getText())) {
             JOptionPane.showMessageDialog(this, "Dung lượng ram phải là số nguyên dương");
             return false;
+        } else if(Integer.parseInt(txtRam.getText()) <= 0) {
+            JOptionPane.showMessageDialog(this, "Dung lượng ram phải lớn hơn 0");
+            return false;
         }
         if (!Validator.isInteger(txtRom.getText())) {
             JOptionPane.showMessageDialog(this, "Dung lượng rom phải là số nguyên dương");
             return false;
+        } else if(Integer.parseInt(txtRom.getText()) <= 0) {
+            JOptionPane.showMessageDialog(this, "Dung lượng rom phải lớn hơn 0");
+            return false;            
         }
         return true;
     }
@@ -781,13 +793,15 @@ public class ThemSuaSanPhamDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_quayLaiBtnMousePressed
 
     private void themSPBtnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_themSPBtnMousePressed
+        if(!ValidateSPInput()) {
+            return;
+        }
         if (pbspModel.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "Bạn phải thêm ít nhất 1 phiên bản");
             return;
         }
-        if (mode.equals("add")) {
+        if (mode.equals("add"))
             addSPEvent();
-        }
         if (mode.equals("edit"))
             editSPEvent();
     }//GEN-LAST:event_themSPBtnMousePressed
@@ -818,6 +832,8 @@ public class ThemSuaSanPhamDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Bạn chưa chọn phiên bản để sửa");
             return;
         } else {
+            if (!ValidatePBSPInput())
+                return;
             if (mode.equals("add")) {
                 this.newPBSPList.get(index).setRam(Integer.parseInt(txtRam.getText()));
                 this.newPBSPList.get(index).setRom(Integer.parseInt(txtRom.getText()));

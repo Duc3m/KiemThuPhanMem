@@ -21,6 +21,7 @@ public class ChonKhachHangDialog extends javax.swing.JDialog {
     private final KhachHangBUS khBUS = new KhachHangBUS();
     private ArrayList<KhachHangDTO> khachHangList = khBUS.getAll();
     private DefaultTableModel tableModel;
+    public boolean choosen = false;
     
     
     public ChonKhachHangDialog(java.awt.Frame parent, boolean modal) {
@@ -152,6 +153,7 @@ public class ChonKhachHangDialog extends javax.swing.JDialog {
 
     private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
         try {
+            choosen = true;
             khTable.getValueAt(khTable.getSelectedRow(), 0);
             dispose();
         } catch (Exception ex) {

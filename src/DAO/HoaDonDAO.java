@@ -66,6 +66,7 @@ public class HoaDonDAO {
             pst.setTimestamp(5, hd.getNgayXuat());
             pst.setLong(6, hd.getTongTien());
             result = pst.executeUpdate();
+            System.out.println(pst);
             DBConnector.closeConnection(conn);
         } catch (Exception e) {
             System.out.println(e);

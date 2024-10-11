@@ -15,6 +15,7 @@ import DTO.CTBaoHanhDTO;
 import DTO.KhachHangDTO;
 import helper.Formatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -136,4 +137,37 @@ public class HoaDonBUS {
         }
         return result;
     }
+    
+    public ArrayList<HoaDonDTO> searchByTotalAmount(int start, int end) {
+        ArrayList<HoaDonDTO> result = new ArrayList<>();
+    
+        for (HoaDonDTO hoaDon : hoaDonList) {
+            if (hoaDon.getTongTien() >= start && hoaDon.getTongTien() <= end)
+                result.add(hoaDon);
+        }
+    
+        return result;
+    }
+
+    public ArrayList<HoaDonDTO> searchByDateRange(Date startDate, Date endDate) {
+        ArrayList<HoaDonDTO> result = new ArrayList<>();
+        
+        Date maxDate = new Date();
+    
+        if (startDate == null)
+            startDate = new Date(Long.MIN_VALUE);
+    
+        if (endDate == null)
+            endDate = maxDate;
+    
+        for (HoaDonDTO hoaDon : hoaDonList) {
+            System.out.print("Tìm từ ngày đến ngày: ");
+            Date ngayXuat = hoaDon.getNgayXuat(); 
+            if (ngayXuat.compareTo(startDate) >= 0 && ngayXuat.compareTo(endDate) <= 0)
+                result.add(hoaDon);
+        }
+    
+        return result;
+    }
+    
 }

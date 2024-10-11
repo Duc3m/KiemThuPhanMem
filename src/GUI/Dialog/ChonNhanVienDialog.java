@@ -21,6 +21,7 @@ public class ChonNhanVienDialog extends javax.swing.JDialog {
     public NhanVienDAO nvDAO = new NhanVienDAO();
     public ArrayList<NhanVienDTO> nhanVienList = nvDAO.selectAllWithoutAccount();
     private DefaultTableModel tableModel;
+    public boolean choosen = false;
     
     public ChonNhanVienDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -142,6 +143,7 @@ public class ChonNhanVienDialog extends javax.swing.JDialog {
     private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
         try {
             nvTable.getValueAt(nvTable.getSelectedRow(), 0);
+            choosen = true;
             dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Chưa chọn nhân viên");
@@ -151,7 +153,7 @@ public class ChonNhanVienDialog extends javax.swing.JDialog {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    public javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable nvTable;

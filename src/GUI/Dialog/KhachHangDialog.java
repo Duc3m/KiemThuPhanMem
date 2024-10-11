@@ -82,6 +82,14 @@ public class KhachHangDialog extends javax.swing.JDialog {
     }
     
     public boolean ValidateInput(){
+        if(
+                Validator.isEmpty(txtHo.getText())
+                && Validator.isEmpty(txtTen.getText())
+                && Validator.isEmpty(txtSDT.getText())
+                ) {
+            JOptionPane.showMessageDialog(this, "Thông tin không được để trống");
+            return false;
+        }
         if(Validator.isEmpty(txtHo.getText())) {
             JOptionPane.showMessageDialog(this, "Bạn chưa nhập họ của khách hàng");
             return false;
@@ -90,17 +98,30 @@ public class KhachHangDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Bạn chưa nhập tên của khách hàng");
             return false;
         }
+        if(Validator.isEmpty(txtSDT.getText())) {
+            JOptionPane.showMessageDialog(this, "Bạn chưa nhập số điện thoại của khách hàng");
+            return false;
+        }
+        if(!Validator.isName(txtHo.getText())) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập họ hợp lệ");
+            return false;
+        }
+        if(!Validator.isName(txtTen.getText())) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập tên hợp lệ");
+            return false;
+        }
         if(!Validator.isPhoneNumber(txtSDT.getText())) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số điện thoại");
+            JOptionPane.showMessageDialog(this, "Số điện thoại phải là số bắt đầu bằng 0 và có độ dài 10 chữ số");
             return false;
         }
         return true;
     }
     
-    public boolean ValidateDuplication(){
+    public boolean ValidateDuplication(int id){
         for(KhachHangDTO i : khBUS.getAll()){
-            if(i.getHo().equals(txtHo.getText()) && i.getTen().equals(txtTen.getText()) && (i.getSoDienThoai().equals(txtSDT.getText()))) {
-                JOptionPane.showMessageDialog(this, "Khách hàng đã tồn tại!");
+            if(i.getId() == id) continue;
+            if(i.getSoDienThoai().equals(txtSDT.getText())) {
+                JOptionPane.showMessageDialog(this, "Khách hàng với số điện thoại này đã tồn tại!");
                 return false;
             } 
         }
@@ -127,7 +148,7 @@ public class KhachHangDialog extends javax.swing.JDialog {
     public void addEvent() {
         if(!ValidateInput())
             return;
-        if(!ValidateDuplication())
+        if(!ValidateDuplication(-1))
             return;
         newKhachHang = getNewKH();
         if(khPanel.khBUS.add(newKhachHang)) {
@@ -140,8 +161,8 @@ public class KhachHangDialog extends javax.swing.JDialog {
     public void editEvent() {
         if(!ValidateInput())
             return;
-//        if(!ValidateDuplication())
-//            return;
+        if(!ValidateDuplication(khachhang.getId()))
+            return;
         setEditedKH();
         if(khPanel.khBUS.update(khachhang)) {
             JOptionPane.showMessageDialog(this, "Sửa thông tin khách hàng thành công!");

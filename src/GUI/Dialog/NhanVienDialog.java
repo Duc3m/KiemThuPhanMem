@@ -85,6 +85,15 @@ public class NhanVienDialog extends javax.swing.JDialog {
     }
     
     public boolean ValidateInput() {
+        if(
+                Validator.isEmpty(txtHo.getText())
+                && Validator.isEmpty(txtTen.getText())
+                && Validator.isEmpty(txtSDT.getText())
+                && Validator.isEmpty(txtEmail.getText())
+        ) {
+            JOptionPane.showMessageDialog(this, "Thông tin không được để trống");
+            return false;
+        }
         if(Validator.isEmpty(txtHo.getText())) {
             JOptionPane.showMessageDialog(this, "Bạn chưa nhập họ của nhân viên");
             return false;
@@ -105,8 +114,16 @@ public class NhanVienDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Bạn chưa nhập email của nhân viên");
             return false;
         }
+        if(!Validator.isName(txtHo.getText())) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập họ hợp lệ");
+            return false;
+        }
+        if(!Validator.isName(txtTen.getText())) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập tên hợp lệ");
+            return false;
+        }
         if(!Validator.isPhoneNumber(txtSDT.getText())) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số điện thoại");
+            JOptionPane.showMessageDialog(this, "Số điện thoại phải là số bắt đầu bằng 0 và có độ dài 10 chữ số");
             return false;
         }
         if(!Validator.isEmail(txtEmail.getText())) {
@@ -124,12 +141,21 @@ public class NhanVienDialog extends javax.swing.JDialog {
         return "";
     }
     
-    public boolean ValidateDuplication() {
+    public boolean ValidateDuplication(int id) {
         for(NhanVienDTO i : nvBUS.getAll()) {
-            if(i.getHo().equals(txtHo.getText()) && i.getTen().equals(txtTen.getText()) && i.getGioiTinh().equals(getSelectedGT()) && (i.getSoDienThoai().equals(txtSDT.getText()) || i.getEmail().equals(txtEmail.getText()))) {
-                JOptionPane.showMessageDialog(this, "Nhân viên đã tồn tại!");
+            if(i.getId() == id) continue;
+//            if(i.getHo().equals(txtHo.getText()) && i.getTen().equals(txtTen.getText()) && i.getGioiTinh().equals(getSelectedGT())) {
+//                JOptionPane.showMessageDialog(this, "Nhân viên đã tồn tại!");
+//                return false;
+//            }
+            if (i.getSoDienThoai().equals(txtSDT.getText())) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại này đã tồn tại!");
                 return false;
-            } 
+            }
+            if (i.getEmail().equals(txtEmail.getText())) {
+                JOptionPane.showMessageDialog(this, "Email này đã tồn tại!");
+                return false;
+            }
         }
         return true;
     }
@@ -161,11 +187,12 @@ public class NhanVienDialog extends javax.swing.JDialog {
     public void addEvent() {
         if(!ValidateInput())
             return;
-        if(!ValidateDuplication())
+        if(!ValidateDuplication(-1))
             return;
         newNhanVien = getNewNV();
         if(nvPanel.nvBUS.add(newNhanVien)) {
             JOptionPane.showMessageDialog(this, "Thêm nhân viên mới thành công!");
+            nvPanel.nhanVienList = nvDAO.selectAll();
             nvPanel.loadDataToTable(nvPanel.nhanVienList);
             dispose();
         }
@@ -174,8 +201,8 @@ public class NhanVienDialog extends javax.swing.JDialog {
     public void editEvent() {
         if(!ValidateInput())
             return;
-//        if(!ValidateDuplication())
-//            return;
+        if(!ValidateDuplication(this.nhanVien.getId()))
+            return;
         setEditedNV();
         if(nvPanel.nvBUS.update(nhanVien)) {
             JOptionPane.showMessageDialog(this, "Sửa thông tin nhân viên thành công!");

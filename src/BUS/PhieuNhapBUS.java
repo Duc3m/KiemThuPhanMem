@@ -15,6 +15,7 @@ import DTO.NhanVienDTO;
 import DTO.PhieuNhapDTO;
 import helper.Formatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -69,7 +70,7 @@ public class PhieuNhapBUS {
         switch(type){
             case "Tất cả":
                 for(PhieuNhapDTO i : phieuNhapList) {
-                    if(Integer.toString(i.getId()).toLowerCase().contains(text) || nccBUS.getNameByID(i.getId()).toLowerCase().contains(text) || nvBUS.getNameByID(i.getId()).toLowerCase().contains(text) || Formatter.FormatDateTime(i.getNgayNhap()).contains(text) || Formatter.FormatVND(i.getTongTien()).contains(text))
+                    if(Integer.toString(i.getId()).toLowerCase().contains(text) || nccBUS.getNameByID(i.getIdNhaCungCap()).toLowerCase().contains(text) || nvBUS.getNameByID(i.getIdNhanVien()).toLowerCase().contains(text) || Formatter.FormatDateTime(i.getNgayNhap()).contains(text) || Formatter.FormatVND(i.getTongTien()).contains(text))
                         result.add(i);
                 }
                 break;
@@ -81,17 +82,17 @@ public class PhieuNhapBUS {
                 break;
             case "Nhà cung cấp":
                 for(PhieuNhapDTO i : phieuNhapList){
-                    if(nccBUS.getNameByID(i.getId()).toLowerCase().contains(text))
+                    if(nccBUS.getNameByID(i.getIdNhaCungCap()).toLowerCase().contains(text))
                         result.add(i);
                 }
                 break;
             case "Nhân viên nhập":
                 for(PhieuNhapDTO i : phieuNhapList){
-                    if(nvBUS.getNameByID(i.getId()).toLowerCase().contains(text))
+                    if(nvBUS.getNameByID(i.getIdNhanVien()).toLowerCase().contains(text))
                         result.add(i);
                 }
                 break;
-            case "Ngày và giờ nhập":
+            case "Ngày nhập":
                 for(PhieuNhapDTO i : phieuNhapList){
                     if(Formatter.FormatDateTime(i.getNgayNhap()).contains(text))
                         result.add(i);
@@ -108,4 +109,37 @@ public class PhieuNhapBUS {
         }
         return result;
     }
+    
+    public ArrayList<PhieuNhapDTO> searchByTotalAmount(int start, int end) {
+        ArrayList<PhieuNhapDTO> result = new ArrayList<>();
+    
+        for (PhieuNhapDTO phieuNhap : phieuNhapList) {
+            if (phieuNhap.getTongTien() >= start && phieuNhap.getTongTien() <= end)
+                result.add(phieuNhap);
+        }
+    
+        return result;
+    }
+
+    public ArrayList<PhieuNhapDTO> searchByDateRange(Date startDate, Date endDate) {
+        ArrayList<PhieuNhapDTO> result = new ArrayList<>();
+        
+        Date maxDate = new Date();
+    
+        if (startDate == null)
+            startDate = new Date(Long.MIN_VALUE);
+    
+        if (endDate == null)
+            endDate = maxDate;
+    
+        for (PhieuNhapDTO phieuNhap : phieuNhapList) {
+            System.out.print("Tìm từ ngày đến ngày: ");
+            Date ngayXuat = phieuNhap.getNgayNhap(); 
+            if (ngayXuat.compareTo(startDate) >= 0 && ngayXuat.compareTo(endDate) <= 0)
+                result.add(phieuNhap);
+        }
+    
+        return result;
+    }
+    
 }

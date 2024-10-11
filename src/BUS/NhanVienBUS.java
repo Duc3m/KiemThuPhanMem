@@ -65,21 +65,21 @@ public class NhanVienBUS {
     
     public boolean delete(NhanVienDTO nv) {
         if(nvDAO.delete(nv.getId()) != 0) {
-            nhanVienList.remove(nv);
+//            nhanVienList.remove(nv);
             return true;
         }
         return false;
     }
     
-    public ArrayList<NhanVienDTO> search(String text) {
-        ArrayList<NhanVienDTO> result = new ArrayList<NhanVienDTO>();
-        text = text.toLowerCase();
-        for(NhanVienDTO i : nhanVienList) {
-            if(Integer.toString(i.getId()).toLowerCase().contains(text) || i.getHo().toLowerCase().contains(text) || i.getTen().toLowerCase().contains(text) || i.getGioiTinh().toLowerCase().contains(text) || i.getSoDienThoai().toLowerCase().contains(text) || i.getEmail().toLowerCase().contains(text))
-               result.add(i);
-        }
-        return result;
-    }
+//    public ArrayList<NhanVienDTO> search(String text) {
+//        ArrayList<NhanVienDTO> result = new ArrayList<NhanVienDTO>();
+//        text = text.toLowerCase();
+//        for(NhanVienDTO i : nhanVienList) {
+//            if(Integer.toString(i.getId()).toLowerCase().contains(text) || i.getHo().toLowerCase().contains(text) || i.getTen().toLowerCase().contains(text) || i.getGioiTinh().toLowerCase().contains(text) || i.getSoDienThoai().toLowerCase().contains(text) || i.getEmail().toLowerCase().contains(text))
+//               result.add(i);
+//        }
+//        return result;
+//    }
     
     public ArrayList<NhanVienDTO> search(String text, String type) {
         ArrayList<NhanVienDTO> result = new ArrayList<>();

@@ -31,6 +31,7 @@ public class ChonCTSPDialog extends javax.swing.JDialog {
     private DefaultTableModel ctspTableModel;
     private SanPhamBUS spBUS = new SanPhamBUS();
     private PhienBanSanPhamBUS pbspBUS = new PhienBanSanPhamBUS();
+    public boolean choosen = false;
     
     public ChonCTSPDialog(java.awt.Frame parent, boolean modal, int pbspId) {
         super(parent, modal);
@@ -41,6 +42,7 @@ public class ChonCTSPDialog extends javax.swing.JDialog {
             @Override
             public void mousePressed(MouseEvent e) {
                 try {
+                    choosen = true;
                     ctspTable.getValueAt(ctspTable.getSelectedRow(), 0);
                     dispose();
                 } catch (Exception ex) {
